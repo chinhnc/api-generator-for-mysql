@@ -4,10 +4,12 @@ module.exports = function(app, bootstrap, utils) {
     let ctrls = bootstrap.loadControllers(utils, models);
 
     // use routes
-    app.get('/api/greeting/:id([0-9a-f]+)', ctrls['greeting'].get);
-    app.post('/api/greeting', ctrls['greeting'].create);
-    app.put('/api/greeting/:id([0-9a-f]+)', ctrls['greeting'].update);
-    app.delete('/api/greeting/:id([0-9a-f]+)', ctrls['greeting'].remove);
+    for (ctrl in ctrls) {
+        app.get('/api/' + ctrl + '/:id([0-9a-f]+)', ctrls[ctrl].get);
+        app.post('/api/' + ctrl, ctrls[ctrl].create);
+        app.put('/api/' + ctrl + '/:id([0-9a-f]+)', ctrls[ctrl].update);
+        app.delete('/api/' + ctrl + '/:id([0-9a-f]+)', ctrls[ctrl].remove);
+    }
 
     // Catch-all
     app.get('*', function(req, res) { res.status(404).json({ error:'Invalid GET request' }) });
